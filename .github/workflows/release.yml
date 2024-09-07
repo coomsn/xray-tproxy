@@ -18,9 +18,11 @@ jobs:
       - name: Run build.sh
         run: sh build.sh
 
-      - name: Upload release
-        uses: softprops/action-gh-release@v1
-        with:
-          tag_name: ${{ github.ref_name }}    # Use the current pushed tag as the Release tag
-          files: xray_lite_v*.zip             # Upload files matching this pattern
-          generate_release_notes: true        # Automatically generate Release notes
+- name: Upload release
+  uses: softprops/action-gh-release@v1
+  with:
+    tag_name: ${{ github.ref_name }}    # 确保这里的 tag_name 合适
+    files: xray_lite_v*.zip             # 确保这里的文件匹配正确
+    generate_release_notes: true        # 自动生成Release说明
+  env:
+    GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  # 确保 Token 正确配置
