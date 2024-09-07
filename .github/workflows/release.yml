@@ -5,7 +5,7 @@ on:
   push:
     paths-ignore:
       - ".github"
-    tags-ignore:
+    tags:
       - "v*"
 
 jobs:
@@ -23,7 +23,5 @@ jobs:
         uses: softprops/action-gh-release@v1
         with:
           tag_name: ${{ github.ref_name }}    # 使用当前推送的标签作为Release的标签
-          files: your_program_v*.zip          # 上传符合此模式的文件
+          files: xray_lite_v*.zip             # 上传符合此模式的文件
           generate_release_notes: true        # 自动生成Release说明
-
-
