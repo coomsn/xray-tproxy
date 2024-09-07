@@ -22,7 +22,7 @@ jobs:
       - name: Tag Repo
         uses: richardsimko/update-tag@v1
         with:
-          tag_name: v24.9.7
+          tag_name: release
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
@@ -31,7 +31,7 @@ jobs:
         if: ${{ success() }}
         with:
           tag: release
-          tag_name: release
+          tag_name: v24.9.7
           files: xray_lite_v*.zip
           prerelease: false
           generate_release_notes: true
