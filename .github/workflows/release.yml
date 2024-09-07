@@ -34,4 +34,4 @@ jobs:
           tag_name: ${{ env.VERSION }}
           files: xray_lite_v*.zip
           prerelease: false
-          generate_release_notes: true
+          generate_release_notes: false
