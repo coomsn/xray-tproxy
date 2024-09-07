@@ -1,0 +1,3 @@
+ip -4 a | awk '/inet/ {print $2}' | grep -vE "^127.0.0.1"
+ps -ef | grep inotifyd
+iptables -t mangle -L -nv

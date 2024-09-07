@@ -1,0 +1,45 @@
+{
+    "outbounds": [
+        {
+            "protocol": "wireguard",
+            "settings": {
+                "secretKey": "+MKdJehV9nnFv+xtEyCwnLez+Jd1EEzKlahkHk5C4kc=",
+                "address": [
+                    "172.16.5.36/32"
+                ],
+                "peers": [
+                    {
+                        "publicKey": "658QxufMbjOTmB61Z7f+c7Rjg7oqWLnepTalqBERjF0=",
+                        "allowedIPs": [
+                            "0.0.0.0/0",
+                            "::/0"
+                        ],
+                        "endpoint": "88.216.97.3:51820"
+                    }
+                ],
+                "mtu": 1280
+            },
+            "tag": "🐢proxy"
+        },
+        {
+            "tag": "direct",
+            "protocol": "freedom",
+            "settings": {
+                "domainStrategy": "UseIP"
+            }
+        },
+        {
+            "tag": "block",
+            "protocol": "blackhole",
+            "settings": {
+                "response": {
+                    "type": "http"
+                }
+            }
+        },
+        {
+            "tag": "dns-out",
+            "protocol": "dns"
+        }
+    ]
+}

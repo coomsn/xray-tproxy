@@ -1,0 +1,58 @@
+{
+  "dns": {
+    "hosts": {
+      "domain:googleapis.cn": "googleapis.com",
+      "domain:google.cn": "google.com"
+    },
+    "servers": [
+      {
+        "address": "223.6.6.6",
+        "domains": [
+          "domain:eu.org",
+          "domain:ping.pe",
+          "domain:jumptoserver.com",
+          "domain:chinaums.com"
+        ],
+        "port": 53,
+        "clientIp": "61.139.2.69",
+        "skipFallback": true
+      },
+      {
+        "address": "1.1.1.1",
+        "port": 53,
+        "skipFallback": false
+      },
+      {
+        "address": "fakedns",
+        "domains": [
+          "geosite:openai",
+          "geosite:twitter",
+          "geosite:youtube",
+          "geosite:google",
+          "geosite:google@cn",
+          "geosite:geolocation-!cn"
+        ],
+        "port": 53,
+        "skipFallback": false
+      },
+      {
+        "address": "223.5.5.5",
+        "domains": [
+          "geosite:cn",
+          "geosite:geolocation-cn"
+        ],
+        "expectIPs": [
+          "geoip:cn"
+        ],
+        "port": 53,
+        "clientIp": "61.139.2.69",
+        "skipFallback": false
+      }
+    ],
+    "clientIp": "138.2.83.107",
+    "queryStrategy": "UseIP",
+    "disableCache": false,
+    "disableFallback": false,
+    "disableFallbackIfMatch": false
+  }
+}

@@ -1,0 +1,22 @@
+#!/system/bin/sh
+scripts=$(realpath $0)
+scripts_dir=$(dirname ${scripts})
+parent_dir=$(dirname ${scripts_dir})
+
+source "${scripts_dir}/xray_lite.service"
+source "${scripts_dir}/xray_net.inotify"
+
+events=$1
+monitor_file=$3
+
+if [ "${monitor_file}" = "disable" ]; then
+  case "${events}" in
+    "d")
+      run_proxy >/dev/null 2>&1
+      ;;
+    "n")
+      stop_proxy >/dev/null 2>&1
+      execute_delete_rules_add >/dev/null 2>&1
+      ;;
+  esac
+fi

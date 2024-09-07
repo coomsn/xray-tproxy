@@ -1,0 +1,28 @@
+{
+  "inbounds": [
+    {
+      "listen": "::",
+      "port": 1536,
+      "protocol": "dokodemo-door",
+      "sniffing": {
+        "enabled": true,
+        "destOverride": [
+          "fakedns",
+          "http",
+          "tls"
+        ],
+        "metadataOnly": false
+      },
+      "settings": {
+        "network": "tcp,udp",
+        "followRedirect": true
+      },
+      "streamSettings": {
+        "sockopt": {
+          "tproxy": "tproxy"
+        }
+      },
+      "tag": "proxy-in"
+    }
+  ]
+}

@@ -1,0 +1,8 @@
+{
+  "log": {
+    "access": "/data/adb/xray_lite/logs/access.log",
+    "error": "/data/adb/xray_lite/logs/error.log",
+    "loglevel": "error",
+    "dnsLog": true
+  }
+}
