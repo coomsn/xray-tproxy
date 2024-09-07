@@ -3,10 +3,10 @@ name: release
 on:
   workflow_dispatch:
   push:
-    paths-ignore:
-      - ".github"
     tags:
       - "v*"
+    paths-ignore:
+      - ".github"
 
 jobs:
   build:
@@ -18,10 +18,9 @@ jobs:
       - name: Run build.sh
         run: sh build.sh
 
-      # 创建GitHub Release并上传构建生成的文件
       - name: Upload release
         uses: softprops/action-gh-release@v1
         with:
-          tag_name: ${{ github.ref_name }}    # 使用当前推送的标签作为Release的标签
-          files: xray_lite_v*.zip             # 上传符合此模式的文件
-          generate_release_notes: true        # 自动生成Release说明
+          tag_name: ${{ github.ref_name }}    # Use the current pushed tag as the Release tag
+          files: xray_lite_v*.zip             # Upload files matching this pattern
+          generate_release_notes: true        # Automatically generate Release notes
