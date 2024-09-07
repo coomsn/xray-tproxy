@@ -1,40 +1,23 @@
-name: Release
+name: release
 
 on:
-  workflow_dispatch: 
   push:
     tags:
-      - "v*"  # 仅在推送标签以 "v" 开头时触发
+      - "v*"
 
 jobs:
-  release:
+  build:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout repository
-        uses: actions/checkout@v3  # 检出存储库代码
+      - uses: actions/checkout@v3
 
       - name: Run build.sh
-        run: sh build.sh  # 运行你自己的构建脚本
+        run: sh build.sh
 
-      - name: Create Release
-        id: create_release
-        uses: actions/create-release@v1
-        with:
-          tag_name: ${{ github.ref }}  # 使用推送的标签作为 Release 标签
-          release_name: ${{ github.ref }}
-          body: "Release description"
-          draft: false
-          prerelease: false
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
-      - name: Upload Release Asset
+      - name: Upload release
         uses: softprops/action-gh-release@v1
-        if: ${{ success() }}
         with:
-          tag: release
-          tag_name: release
+          tag_name: ${{ github.ref_name }}
           files: xray_lite_v*.zip
-          prerelease: true
           generate_release_notes: true
