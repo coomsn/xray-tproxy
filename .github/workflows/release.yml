@@ -18,13 +18,6 @@ jobs:
       - name: Run build.sh
         run: sh build.sh
 
-      - name: Delete current prerelease assets
-        uses: andreaswilli/delete-release-assets-action@v3.0.0
-        with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          tag: Prerelease
-          deleteOnlyFromDrafts: false
-
       - name: Tag Repo
         uses: richardsimko/update-tag@v1
         with:
