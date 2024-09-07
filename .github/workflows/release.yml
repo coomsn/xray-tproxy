@@ -1,4 +1,4 @@
-name: Create Release
+name: Release
 
 on:
   workflow_dispatch: 
@@ -17,16 +17,22 @@ jobs:
       - name: Run build.sh
         run: sh build.sh  # 运行你自己的构建脚本
 
-      - name: List files
-        run: ls -l  # 列出生成的文件，以便调试
-
-      - name: Create Release and Upload Assets
-        uses: softprops/action-gh-release@v1  # 使用第三方 action 来创建发布
-        if: success()  # 仅在之前的步骤成功时运行
+      - name: Create Release
+        id: create_release
+        uses: actions/create-release@v1
         with:
           tag_name: ${{ github.ref }}  # 使用推送的标签作为 Release 标签
-          files: xray*.zip  # 上传符合此模式的文件
-          prerelease: false  # 标记为正式发布
-          generate_release_notes: true  # 自动生成 Release 说明
+          release_name: ${{ github.ref }}
+          body: "Release description"
+          draft: false
+          prerelease: false
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  # 使用 GitHub 提供的 Token 进行身份验证
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Upload Release Asset
+        uses: actions/upload-release-asset@v1
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }}
+          asset_path: xray*.zip  # 上传符合此模式的文件
+          asset_name: xray.zip
+          asset_content_type: application/zip
