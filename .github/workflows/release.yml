@@ -28,7 +28,7 @@ jobs:
         if: ${{ success() }}
         with:
           tag_name: ${{ github.ref }}  # 使用推送的标签作为 Release 标签
-          files: xray*.zip             # 上传符合此模式的文件
+          files: xray_lite_*.zip             # 上传符合此模式的文件
           prerelease: false                 # 标记为正式发布
           generate_release_notes: true      # 自动生成 Release 说明
         env:
