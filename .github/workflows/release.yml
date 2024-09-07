@@ -1,31 +1,35 @@
 name: release
 
 on:
-  workflow_dispatch:
+  workflow_dispatch:  # 手动触发
   push:
     paths-ignore:
       - ".github"
       - "README.md"
-    tags-ignore:
-      - "v*"
+    tags:
+      - "v*"  # 仅在推送标签以 "v" 开头时触发
 
 jobs:
   build:
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v3
+      - name: Checkout repository
+        uses: actions/checkout@v3
 
       - name: Run build.sh
         run: sh build.sh
+
+      - name: List files
+        run: ls -l
 
       - name: Upload release
         uses: softprops/action-gh-release@v1
         if: ${{ success() }}
         with:
-          tag_name: ${{ github.ref_name }}  # 使用推送的标签作为 Release 标签
+          tag_name: ${{ github.ref }}  # 使用推送的标签作为 Release 标签
           files: xray*.zip             # 上传符合此模式的文件
-          prerelease: false                 # 标记为 release
+          prerelease: false                 # 标记为正式发布
           generate_release_notes: true      # 自动生成 Release 说明
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  # 提供 GitHub Token
