@@ -31,37 +31,5 @@ ui_print "- 正在设置权限"
 set_perm /data/adb/service.d/xray_lite_service.sh 0 0 0755
 set_perm_recursive $MODPATH 0 0 0755 0755
 set_perm_recursive $unzip_path/xray_lite 0 0 0755 0755
-
-ui_print "-----------------------------------------------------------"
-ui_print "- Do you want to download xray and Geox ?"
-ui_print "- Make sure you have a good internet connection."
-ui_print "- [ Vol UP(+): Yes ]"
-ui_print "- [ Vol DOWN(-): No ]"
-
-START_TIME=$(date +%s)
-while true ; do
-  NOW_TIME=$(date +%s)
-  timeout 1 getevent -lc 1 2>&1 | grep KEY_VOLUME > "$TMPDIR/events"
-  if [ $(( NOW_TIME - START_TIME )) -gt 9 ] ; then
-    ui_print "- No input detected after 10 seconds"
-    break
-  else
-    if $(cat $TMPDIR/events | grep -q KEY_VOLUMEUP) ; then
-      ui_print "- It will take a while...."
-      /data/adb/xray_lite/scripts/update_xray > /dev/null 2>&1
-      if [ -f /data/adb/xray_lite/binary/LICENSE ] ; then
-      ui_print "- Download successful!"
-      rm -f /data/adb/xray_lite/binary/LICENSE
-      else
-      ui_print "- Download failed!"
-      fi
-      break
-    elif $(cat $TMPDIR/events | grep -q KEY_VOLUMEDOWN) ; then
-      ui_print "- Skip download xray and Geox"
-      break
-    fi
-  fi
-done
-
 ui_print "- 完成权限设置"
 ui_print "- enjoy!"
