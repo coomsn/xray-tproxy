@@ -19,19 +19,19 @@ jobs:
       - name: Run build.sh
         run: sh build.sh
 
-      - name: Tag Repo
-        uses: richardsimko/update-tag@v1
-        with:
-          tag_name: release
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - name: Extract version from filename
+        id: extract_version
+        run: |
+          # Find the ZIP file and extract the version number from its name
+          zip_file=$(ls xray_lite_v*.zip)
+          version=$(echo "$zip_file" | sed -E 's/xray_lite_v(.*).zip/\1/')
+          echo "VERSION=${version}" >> $GITHUB_ENV
 
       - name: Upload release
         uses: softprops/action-gh-release@v1
         if: ${{ success() }}
         with:
-          tag: release
-          tag_name: v24.9.7
+          tag_name: ${{ env.VERSION }}
           files: xray_lite_v*.zip
           prerelease: false
           generate_release_notes: true
