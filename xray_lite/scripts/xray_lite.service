@@ -60,7 +60,7 @@ if [ -f "${scripts_dir}/pid.txt" ] ; then
   killall $(awk -F ':' 'NR==1 {print $1}' ${scripts_dir}/pid.txt)
   kill -9 $(awk -F ':' 'NR==1 {print $2}' ${scripts_dir}/pid.txt)
   rm ${scripts_dir}/*.list
-  rm ${scripts_dir}/logs/*.log
+  rm ${parent_dir}/logs/*.log
   rm ${scripts_dir}/pid.txt
 fi
 }
