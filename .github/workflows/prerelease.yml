@@ -1,4 +1,4 @@
-name: prerelease
+name: Release
 
 on:
   workflow_dispatch:
@@ -19,26 +19,19 @@ jobs:
       - name: Run build.sh
         run: sh build.sh
 
-      - name: Delete current prerelease assets
-        uses: andreaswilli/delete-release-assets-action@v3.0.0
-        with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          tag: Prerelease
-          deleteOnlyFromDrafts: false
-
       - name: Tag Repo
         uses: richardsimko/update-tag@v1
         with:
-          tag_name: Prerelease
+          tag_name: release
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Upload Prerelease
+      - name: Upload release
         uses: softprops/action-gh-release@v1
         if: ${{ success() }}
         with:
-          tag: Prerelease
-          tag_name: Prerelease
+          tag: release
+          tag_name: release
           files: xray_lite_v*.zip
-          prerelease: true
+          prerelease: false
           generate_release_notes: true
