@@ -7,7 +7,7 @@ on:
       - ".github"
       - "README.md"
     tags:
-      - "v*"  # 仅在推送标签以 "v" 开头时触发
+      - "xray*"  # 仅在推送标签以 "v" 开头时触发
 
 jobs:
   build:
