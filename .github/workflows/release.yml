@@ -22,7 +22,7 @@ jobs:
       - name: Tag Repo
         uses: richardsimko/update-tag@v1
         with:
-          tag_name: release
+          tag_name: v24.9.7
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
