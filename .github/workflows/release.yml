@@ -24,8 +24,9 @@ jobs:
         run: |
           # Find the ZIP file and extract the version number from its name
           zip_file=$(ls xray_lite_v*.zip)
-          version=$(echo "$zip_file" | sed -E 's/xray_lite_v(.*).zip/\1/')
+          version=$(echo "$zip_file" | sed -E 's/xray_lite_v(.*).zip/v\1/')
           echo "VERSION=${version}" >> $GITHUB_ENV
+
 
       - name: Upload release
         uses: softprops/action-gh-release@v1
