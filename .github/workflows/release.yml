@@ -18,19 +18,12 @@ jobs:
       - name: Run build.sh
         run: sh build.sh
 
-      - name: Tag Repo
-        uses: richardsimko/update-tag@v1
-        with:
-          tag_name: Prerelease
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
-      - name: Upload Prerelease
+      # 创建GitHub Release并上传构建生成的文件
+      - name: Upload release
         uses: softprops/action-gh-release@v1
-        if: ${{ success() }}
         with:
-          tag: Prerelease
-          tag_name: Prerelease
-          files: xray_lite_v*.zip
-          prerelease: true
-          generate_release_notes: true
+          tag_name: ${{ github.ref_name }}    # 使用当前推送的标签作为Release的标签
+          files: your_program_v*.zip          # 上传符合此模式的文件
+          generate_release_notes: true        # 自动生成Release说明
+
+
