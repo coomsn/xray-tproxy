@@ -1,6 +1,8 @@
 name: Create Release
 
+
 on:
+  workflow_dispatch: 
   push:
     tags:
       - "v*"  # 仅在推送标签以 "v" 开头时触发
