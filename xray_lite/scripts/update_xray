@@ -7,7 +7,7 @@ clear
 echo "Upgrade xray files."
 
 # Get the latest version tag name，Not ignor Pre-release
-latest_version=$(curl -s https://api.github.com/repos/XTLS/Xray-core/releases | grep -m 1 -oE '"tag_name": *"v[0-9]+\.[0-9]+\.[0-9]+"' | sed -E 's/.*"([^"]+)".*/\1/')
+latest_version=$(curl -s https://api.github.com/repos/XTLS/Xray-core/releases | grep -m 1 -oE '"tag_name": *"v[0-9]+\.[0-9]+\.[0-9]+"' | awk -F '"' '{print $4}')
 
 # Check if latest_version is empty
 if [ -z "$latest_version" ]; then
