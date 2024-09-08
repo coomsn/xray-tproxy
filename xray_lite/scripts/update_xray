@@ -8,33 +8,42 @@ echo "Upgrade xray files."
 
 # Get the latest version tag name，Not ignor Pre-release
 latest_version=$(curl -s https://api.github.com/repos/XTLS/Xray-core/releases | grep -m 1 -oE '"tag_name": *"v[0-9]+\.[0-9]+\.[0-9]+"' | awk -F '"' '{print $4}')
-
-# Check if latest_version is empty
-if [ -z "$latest_version" ]; then
+# Check if ${latest_version} is empty
+if [ -z "${latest_version}" ]; then
   echo "Failed to retrieve the latest version. Exiting script."
   exit 1  # Exit the script with a non-zero status code to indicate failure
 fi
 
 # Construct the download URL (assuming you need the Android ARM64 version)
-download_url="https://github.com/XTLS/Xray-core/releases/download/$latest_version/Xray-android-arm64-v8a.zip"
+case "$(uname -m)" in
+    'armv8' | 'aarch64')
+      MACHINE='arm64-v8a'
+      ;;
+    *)
+      echo "error: The architecture is not supported."
+      exit 1
+      ;;
+esac
+
+download_url="https://github.com/XTLS/Xray-core/releases/download/${latest_version}/Xray-android-${MACHINE}.zip"
 
 # Set the download filename
-filename="Xray-android-arm64-v8a.zip"
+filename="Xray-android-${MACHINE}.zip"
 
 # Download the file
-echo "Downloading Xray-core version $latest_version ..."
-curl -L --progress-bar -o $filename $download_url
+echo "Downloading Xray-core version ${latest_version} ..."
+curl -L --progress-bar -o ${filename} ${download_url}
 
 # Check if the file was downloaded successfully
-if [ -f "${scripts_dir}/$filename" ]; then
+if [ -f "${scripts_dir}/${filename}" ]; then
   # Stop the xray process
   kill $(pidof xray) > /dev/null 2>&1
   sleep 2
   # Unzip the file and overwrite existing files
-  unzip -o $filename -d ${parent_dir}/binary
+  unzip -o ${filename} -d ${parent_dir}/binary
   # Clean up the zip file
-  rm $filename
-  echo -e "Xray-core \e[31m$latest_version\e[0m downloaded and extracted to ${parent_dir}/binary/"
+  rm ${filename}
+  echo -e "Xray-core \e[31m${latest_version}\e[0m downloaded and extracted to ${parent_dir}/binary/"
   sleep 3
 # Run the start.sh script
   ${scripts_dir}/start.sh
