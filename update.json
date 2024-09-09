@@ -1,6 +1,6 @@
 {
-    "version": "v5.0",
-    "versionCode": 2024080921,
-    "zipUrl": "https://githownload/v5.0/box4_v5.0.zip",
-    "changelog": "update"
+  "version": "v24.9.7",
+  "versionCode": "202409",
+  "zipUrl": "https://github.com/coomsn/xray_lite4magisk_public/releases/download/${version}/xray_lite_${version}.zip",
+  "changelog": "https://github.com/coomsn/xray_lite4magisk_public/raw/master/CHANGELOG.md"
 }
