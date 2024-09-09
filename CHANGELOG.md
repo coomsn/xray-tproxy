@@ -1,5 +1,3 @@
-<div align="left">
+## 链接测试
 
-[update测试]
-
-</div>
+magisk自动推送模块更新
