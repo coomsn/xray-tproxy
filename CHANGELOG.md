@@ -1,1 +1,11 @@
-模块推送测试
+### 节点配置文件
+
+路径：`/xray_lite/confs/`
+
+### 内核升级脚本
+
+路径：`/xray_lite/scripts/update_xray`
+
+本模块自带一个永久节点，协议为 **WireGuard**。
+
+
