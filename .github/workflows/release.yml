@@ -1,4 +1,4 @@
-name: Release, including kernel，v1.0.00
+name: Release, including kernel，v1.0.01
 
 on:
   workflow_dispatch:
