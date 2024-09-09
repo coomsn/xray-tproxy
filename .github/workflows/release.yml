@@ -27,7 +27,7 @@ jobs:
             "version": "'"${version}"'",
             "versionCode": "'"${versionCode}"'",
             "zipUrl": "https://github.com/coomsn/xray_lite4magisk_public/releases/download/'"${version}"'/xray_lite_'${version}'.zip",
-            "changelog": "https://github.com/coomsn/xray_lite4magisk_public/raw/master/CHANGELOG.md"
+            "changelog": "https://github.com/coomsn/xray_lite4magisk_public/raw/main/CHANGELOG.md"
           }' > update.json
 
       - name: Commit and push update.json
