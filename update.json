@@ -1,6 +1,6 @@
 {
   "version": "v24.9.7",
   "versionCode": "202409",
-  "zipUrl": "https://github.com/coomsn/xray_lite4magisk_public/releases/download/${version}/xray_lite_${version}.zip",
+  "zipUrl": "https://github.com/coomsn/xray_lite4magisk_public/releases/download/v24.9.7/xray_lite_v24.9.7.zip",
   "changelog": "https://github.com/coomsn/xray_lite4magisk_public/raw/master/CHANGELOG.md"
 }
