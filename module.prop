@@ -1,7 +1,7 @@
 id=xray_lite-module
 name=xray_lite4magisk
-version=v1.0.08
-versionCode=20240909
+version=v1.0.09
+versionCode=20240910
 author=Tony
 description=Created on 9 9, 2024.
 updateJson=https://github.com/coomsn/xray_lite4magisk_public/raw/main/update.json
