@@ -49,9 +49,11 @@ if [ -n "$largest_folder" ]; then
       
       # 覆盖 /data/adb/xray_lite/confs 目录中的内容
       if [ -d "$folder/confs" ]; then
-        cp -r "$folder/confs/"* /data/adb/xray_lite/confs/
+        cp -rf "$folder/confs/"* /data/adb/xray_lite/confs/
+        cp -f "$folder/scripts/settings.ini" /data/adb/xray_lite/scripts/
         ui_print "- Copied contents of $folder/confs to /data/adb/xray_lite/confs/"
         ui_print "- 成功还原配置文件"
+        ui_print "- 成功还原settings.ini"
       fi
       break
     fi
