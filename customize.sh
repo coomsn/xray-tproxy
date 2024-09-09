@@ -35,4 +35,29 @@ set_perm /data/adb/service.d/xray_lite_service.sh 0 0 0755
 set_perm $MODPATH/uninstall.sh 0 0 0755
 set_perm /data/adb/xray_lite/scripts/ 0 0 0755
 ui_print "- 完成权限设置"
+ui_print "- 还原配置文件"
+
+# 找到文件夹对应的最大的数字
+largest_folder=$(find /data/adb -maxdepth 1 -type d -name 'xray_lite[0-9]*' | sed 's/.*xray_lite//' | sed 's/_//g' | sort -nr | head -n 1)
+
+# 使用这个最大的数字，重新匹配回原始文件夹名
+if [ -n "$largest_folder" ]; then
+  for folder in /data/adb/xray_lite*; do
+    clean_name=$(echo "$folder" | sed 's/.*xray_lite//' | sed 's/_//g')
+    if [ "$clean_name" = "$largest_folder" ]; then
+      ui_print "- Found folder: $folder"
+      
+      # 覆盖 /data/adb/xray_lite/confs 目录中的内容
+      if [ -d "$folder/confs" ]; then
+        cp -r "$folder/confs/"* /data/adb/xray_lite/confs/
+        ui_print "- Copied contents of $folder/confs to /data/adb/xray_lite/confs/"
+        ui_print "- 成功还原配置文件"
+      fi
+      break
+    fi
+  done
+else
+  ui_print "- 首次安装，无备份配置可还原"
+fi
+
 ui_print "- enjoy!"
