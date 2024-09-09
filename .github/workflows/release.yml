@@ -30,6 +30,14 @@ jobs:
             "changelog": "https://github.com/coomsn/xray_lite4magisk_public/raw/master/CHANGELOG.md"
           }' > update.json
 
+      - name: Commit and push update.json
+        run: |
+          git config --local user.name "coomsn"
+          git config --local user.email "acstudycn@gmail.com"
+          git add update.json
+          git commit -m "Update update.json for version $(grep -oP 'version=\K[^ ]+' module.prop)"
+          git push -f origin main
+
       - name: Run build.sh
         run: sh build.sh
 
