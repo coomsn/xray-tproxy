@@ -53,8 +53,9 @@ jobs:
         id: get_release_notes
         run: |
           RELEASE_NOTES=$(cat CHANGELOG.md)
-          printf "%s\n" "$RELEASE_NOTES" >> release_notes.txt
-          echo "RELEASE_NOTES=$(cat release_notes.txt)" >> $GITHUB_ENV
+          echo "RELEASE_NOTES<<EOF" >> $GITHUB_ENV
+          echo "$RELEASE_NOTES" >> $GITHUB_ENV
+          echo "EOF" >> $GITHUB_ENV
 
       - name: Upload release
         uses: softprops/action-gh-release@v1
@@ -62,5 +63,7 @@ jobs:
         with:
           tag_name: ${{ env.VERSION }}
           files: xray_lite_v*.zip
+          body: ${{ env.RELEASE_NOTES }}
           prerelease: false
           generate_release_notes: false
+
