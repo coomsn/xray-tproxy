@@ -53,7 +53,7 @@ jobs:
         id: get_release_notes
         run: |
           RELEASE_NOTES=$(cat CHANGELOG.md)
-          echo "release_notes<<EOF" >> $GITHUB_ENV
+          echo "RELEASE_NOTES<<EOF" >> $GITHUB_ENV
           echo "$RELEASE_NOTES" >> $GITHUB_ENV
           echo "EOF" >> $GITHUB_ENV
 
