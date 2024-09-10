@@ -53,9 +53,8 @@ jobs:
         id: get_release_notes
         run: |
           RELEASE_NOTES=$(cat CHANGELOG.md)
-          echo "RELEASE_NOTES<<EOF" >> $GITHUB_ENV
-          echo "$RELEASE_NOTES" >> $GITHUB_ENV
-          echo "EOF" >> $GITHUB_ENV
+          printf "%s\n" "$RELEASE_NOTES" >> release_notes.txt
+          echo "RELEASE_NOTES=$(cat release_notes.txt)" >> $GITHUB_ENV
 
       - name: Upload release
         uses: softprops/action-gh-release@v1
