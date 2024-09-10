@@ -49,6 +49,14 @@ jobs:
           version=$(echo "$zip_file" | sed -E 's/xray_lite_v(.*).zip/v\1/')
           echo "VERSION=${version}" >> $GITHUB_ENV
 
+      - name: Read release notes from CHANGELOG.md
+        id: get_release_notes
+        run: |
+          RELEASE_NOTES=$(cat CHANGELOG.md)
+          echo "release_notes<<EOF" >> $GITHUB_ENV
+          echo "$RELEASE_NOTES" >> $GITHUB_ENV
+          echo "EOF" >> $GITHUB_ENV
+
       - name: Upload release
         uses: softprops/action-gh-release@v1
         if: ${{ success() }}
