@@ -67,41 +67,38 @@ fi
 
 # Function to create TPROXY rules
 createProxyRules() {
-  # Create routes and rules
-  ${1} rule add fwmark "${fwmark}" table ${2}  pref $(expr ${2} \* 10)
+  ${1} rule add fwmark "${fwmark}" table ${2}  pref $(( ${2} * 10 ))
   ${1} route add local default dev lo table ${2}
   # Create custom chain
   ${3} -t mangle -N ${4}_EXTERNAL
   ${3} -t mangle -F ${4}_EXTERNAL
   ${3} -t mangle -N ${4}_LOCAL
   ${3} -t mangle -F ${4}_LOCAL
-  # Create external custom chain rules
+  ${3} -t mangle -N DIVERT
+  ${3} -t mangle -F DIVERT
+  
+# Create custom chain rules
+  ${3} -t mangle -A ${4}_LOCAL -p udp --dport 53 -j MARK --set-mark ${fwmark}
+  ${3} -t mangle -A ${4}_LOCAL -p tcp --dport 53 -j MARK --set-mark ${fwmark}
+  
+  ${3} -t mangle -A ${4}_EXTERNAL -p udp --dport 53 -j TPROXY --on-port ${tp_port} --tproxy-mark ${fwmark}
+  ${3} -t mangle -A ${4}_EXTERNAL -p tcp --dport 53 -j TPROXY --on-port ${tp_port} --tproxy-mark ${fwmark}
+
   for subnet in ${5}; do
-    ${3} -t mangle -A ${4}_EXTERNAL -d ${subnet} -p udp ! --dport 53 -j RETURN
-    ${3} -t mangle -A ${4}_EXTERNAL -d ${subnet} ! -p udp -j RETURN
+    ${3} -t mangle -A ${4}_EXTERNAL -d ${subnet} -j RETURN
+    ${3} -t mangle -A ${4}_LOCAL -d ${subnet} -j RETURN
   done
 
   ${3} -t mangle -A ${4}_EXTERNAL -p tcp -i lo -j TPROXY --on-port ${tp_port} --tproxy-mark ${fwmark}
   ${3} -t mangle -A ${4}_EXTERNAL -p udp -i lo -j TPROXY --on-port ${tp_port} --tproxy-mark ${fwmark}
-
-if [ "${ap_list}" != "" ]; then
+  
+  if [ "${ap_list}" != "" ]; then
   for ap in ${ap_list[@]} ; do
     ${3} -t mangle -A ${4}_EXTERNAL -p tcp -i "${ap}" -j TPROXY --on-port "${tp_port}" --tproxy-mark "${fwmark}"
     ${3} -t mangle -A ${4}_EXTERNAL -p udp -i "${ap}" -j TPROXY --on-port "${tp_port}" --tproxy-mark "${fwmark}"
   done
 fi  
 
-  ${3} -t mangle -A ${4}_EXTERNAL -m socket -j RETURN
-
-  # Create internal custom chain rules
-  ${3} -t mangle -A ${4}_LOCAL -m owner --uid-owner ${box_user} --gid-owner ${box_group} -j RETURN
-  ${3} -t mangle -A ${4}_LOCAL -p tcp -m mark --mark ${fwmark} -j RETURN
-  ${3} -t mangle -A ${4}_LOCAL -p udp -m mark --mark ${fwmark} -j RETURN
-  for subnet in ${5}; do
-    ${3} -t mangle -A ${4}_LOCAL -d ${subnet} -p udp ! --dport 53 -j RETURN
-    ${3} -t mangle -A ${4}_LOCAL -d ${subnet} ! -p udp -j RETURN
-  done
-  
 case "${list_mode}" in
   "blacklist")
     for appid in ${6}; do
@@ -123,43 +120,48 @@ case "${list_mode}" in
     else
       echo "Invalid list_mode: ${list_mode}"
     fi
-    ${3} -t mangle -A ${4}_LOCAL -p udp --dport 53 -j MARK --set-mark ${fwmark}
     ;;
   *)
     echo "Invalid list_mode: ${list_mode}"
     ;;
 esac
 
+# Loopback prevention rules
+  ${3} -t mangle -I ${4}_LOCAL -m owner  --gid-owner ${box_group} -j RETURN
+  
+  ${3} -t mangle -A DIVERT -j MARK --set-mark "${fwmark}"
+  ${3} -t mangle -A DIVERT -j ACCEPT
+  
   # Referencing custom chains
   ${3} -t mangle -A PREROUTING -j ${4}_EXTERNAL
+  ${3} -t mangle -I PREROUTING -p tcp -m socket -j DIVERT
   ${3} -t mangle -A OUTPUT -j ${4}_LOCAL
-  if [ ${list_switch} = true ]; then
-    local list_name=$(echo ${3} | busybox awk '{print $1}')
-    ${3} -t mangle -L -nv > ${scripts_dir}/${list_name}_mangle_rules.list
-  fi
 }
 
 # Function to execute proxy rules
 executeProxyRules() {
   createProxyRules ip "${table}" "${IPV}" "${chain_name}" "${intranet[*]}" "${uids[*]}"
   if [ "${ip6tables_switch}" = true ]; then
-    createProxyRules "ip -6" "$(expr ${table} \* 2)" "${IP6V}" "${chain_name}6" "${intranet6[*]}" "${uids[*]}"
+    createProxyRules "ip -6" "$(( ${table} * 2 ))" "${IP6V}" "${chain_name}6" "${intranet6[*]}" "${uids[*]}"
   fi
 }
 
 # Function to delete proxy rules
 deleteProxyRules() {
-  ${1} rule del fwmark "${fwmark}" table ${2} pref $(expr ${2} \* 10)
+  ${1} rule del fwmark "${fwmark}" table ${2} pref $(( ${2} * 10 ))
   ${1} route del local default dev lo table ${2}
   ${1} route flush table ${2}
   # First, delete the reference chain, otherwise the custom chain cannot be deleted.
   ${3} -t mangle -D PREROUTING -j ${4}_EXTERNAL
+  ${3} -t mangle -D PREROUTING -p tcp -m socket -j DIVERT
   ${3} -t mangle -D OUTPUT -j ${4}_LOCAL
   # Secondly, delete the custom rules of the custom chain.
   ${3} -t mangle -F ${4}_EXTERNAL
+  ${3} -t mangle -F DIVERT
   ${3} -t mangle -F ${4}_LOCAL
   # Finally, delete the custom chain.
   ${3} -t mangle -X ${4}_EXTERNAL
+  ${3} -t mangle -X DIVERT
   ${3} -t mangle -X ${4}_LOCAL
 }
 
@@ -167,7 +169,7 @@ deleteProxyRules() {
 executeDeleteProxyRules() {
   deleteProxyRules ip "${table}" "${IPV}" "${chain_name}"
   if [ "${ip6tables_switch}" = true ]; then
-    deleteProxyRules "ip -6" "$(expr ${table} \* 2)" "${IP6V}" "${chain_name}6"
+    deleteProxyRules "ip -6" "$(( ${table} * 2 ))" "${IP6V}" "${chain_name}6"
   fi
 }
 
