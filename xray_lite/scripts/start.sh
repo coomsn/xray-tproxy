@@ -6,7 +6,6 @@ parent_dir=$(dirname ${scripts_dir})
 module_dir="/data/adb/modules/xray_lite-module"
 
 source ${scripts_dir}/xray_lite.service
-log Info "The process is starting, please wait"
 
 # environment variables
 export PATH="/data/adb/magisk:/data/adb/ksu/bin:$PATH:/system/bin"
