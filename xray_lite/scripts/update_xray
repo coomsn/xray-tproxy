@@ -5,6 +5,7 @@ parent_dir=$(dirname ${scripts_dir})
 
 clear
 echo "Upgrade xray files."
+source ${scripts_dir}/xray_lite.service
 
 # Get the latest version tag name，Not ignor Pre-release
 latest_version=$(curl -s https://api.github.com/repos/XTLS/Xray-core/releases | grep -m 1 -oE '"tag_name": *"v[0-9]+\.[0-9]+\.[0-9]+"' | awk -F '"' '{print $4}')
@@ -44,9 +45,10 @@ if [ -f "${scripts_dir}/${filename}" ]; then
   # Clean up the zip file
   rm ${filename}
   echo -e "Xray-core \e[31m${latest_version}\e[0m downloaded and extracted to ${parent_dir}/binary/"
-  sleep 3
+  log Warn "wait a moment"
+  sleep 2
 # Run the start.sh script
-  ${scripts_dir}/start.sh
+  stop_proxy && sleep 3 && start_proxy
 else
   echo "File download failed."
   exit 1  # Exit the script with a non-zero status code to indicate failure
