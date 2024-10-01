@@ -2,6 +2,7 @@
 scripts=$(realpath $0)
 scripts_dir=$(dirname ${scripts})
 parent_dir=$(dirname ${scripts_dir})
+module_dir="/data/adb/modules/xray_lite-module"
 
 clear
 echo "Upgrade xray files."
@@ -47,8 +48,12 @@ if [ -f "${scripts_dir}/${filename}" ]; then
   echo -e "Xray-core \e[31m${latest_version}\e[0m downloaded and extracted to ${parent_dir}/binary/"
   log Warn "wait a moment"
   sleep 2
-# Run the start.sh script
-  stop_proxy && sleep 3 && start_proxy
+# restart service
+if [ ! -f "${module_dir}/disable" ]; then
+  stop_proxy 2>/dev/null && sleep 3 && start_proxy 2>/dev/null
+  else
+  log Warn "module is not enabled"
+fi
 else
   echo "File download failed."
   exit 1  # Exit the script with a non-zero status code to indicate failure
