@@ -6,13 +6,13 @@ parent_dir=$(dirname ${scripts_dir})
 module_dir="/data/adb/modules/xray_lite-module"
 
 source ${scripts_dir}/xray_lite.service
-
-# environment variables
-export PATH="/data/adb/magisk:/data/adb/ksu/bin:$PATH:/system/bin"
+log Info "The process is starting, please wait"
 
 # Check if the disable file does not exist, then run the proxy
 if [ ! -f "${module_dir}/disable" ]; then
   start_proxy # >/dev/null 2>&1
+  else
+  log Warn "module is not enabled"
 fi
 
 start_xray_lite.inotify() {
@@ -27,3 +27,5 @@ start_xray_lite.inotify() {
 
 # Create inotifyd.
 start_xray_lite.inotify
+
+# 2024 1001 1200
