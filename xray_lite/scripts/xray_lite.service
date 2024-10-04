@@ -3,13 +3,8 @@ scripts=$(realpath $0)
 scripts_dir=$(dirname ${scripts})
 parent_dir=$(dirname ${scripts_dir})
 
-clear; cd "${scripts_dir}"
+clear
 
-# define color
-normal=$(printf '\033[0m'); green=$(printf '\033[0;32m'); red=$(printf '\033[91m')
-
-# environment variables
-export PATH="/data/adb/magisk:$PATH:/system/bin"
 source ${scripts_dir}/settings.ini
 
 # check iptables_version
@@ -268,4 +263,4 @@ description() {
   current_time=$(date "+[%m.%d %H:%M]")
   sed -i "/description/c\description=${current_time} ${symbol} ${core_name} ${version} ${network_mode} ${event}" "${prop_file}"
 }
-# 2024 1001 1200
+# 2024 1004 1600

@@ -28,4 +28,4 @@ start_xray_lite.inotify() {
 # Create inotifyd.
 start_xray_lite.inotify
 
-# 2024 1001 1200
+# 2024 1004 1600
