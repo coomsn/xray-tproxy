@@ -50,7 +50,7 @@ if [ -f "${scripts_dir}/${filename}" ]; then
   sleep 2
 # restart service
 if [ ! -f "${module_dir}/disable" ]; then
-  stop_proxy 2>/dev/null && sleep 3 && start_proxy 2>/dev/null
+  stop_tproxy 2>/dev/null && sleep 3 && start_tproxy 2>/dev/null
   else
   log Warn "module is not enabled"
 fi

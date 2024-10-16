@@ -10,7 +10,7 @@ log Info "The process is starting, please wait"
 
 # Check if the disable file does not exist, then run the proxy
 if [ ! -f "${module_dir}/disable" ]; then
-  start_proxy # >/dev/null 2>&1
+  start_tproxy # >/dev/null 2>&1
   else
   log Warn "module is not enabled"
 fi
