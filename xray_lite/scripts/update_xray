@@ -33,7 +33,7 @@ download_url="https://github.com/XTLS/Xray-core/releases/download/${latest_versi
 filename="Xray-android-${MACHINE}.zip"
 
 # Download the file
-echo "Downloading Xray-core version ${latest_version} ..."
+echo "downloading xray ${latest_version} ..."
 curl -L --progress-bar -o ${filename} ${download_url}
 
 # Check if the file was downloaded successfully
@@ -45,7 +45,7 @@ if [ -f "${scripts_dir}/${filename}" ]; then
   unzip -o ${filename} -d ${parent_dir}/binary
   # Clean up the zip file
   rm ${filename}
-  echo -e "Xray-core \e[31m${latest_version}\e[0m downloaded and extracted to ${parent_dir}/binary/"
+  echo -e "xray \e[31m${latest_version}\e[0m downloaded and extracted to ${parent_dir}/binary/"
   log Warn "wait a moment"
   sleep 2
 # restart service
@@ -58,4 +58,4 @@ else
   echo "File download failed."
   exit 1  # Exit the script with a non-zero status code to indicate failure
 fi
-# 2024 1004 1600
+# 2024 1016 1310
