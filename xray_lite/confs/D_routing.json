@@ -6,10 +6,10 @@
       {
         "tag": "💦Balancer",
         "selector": [
-          "🐢main4_split",
-          "🐢main5_split"
+          "🐢proxy1",
+          "🐢proxy2"
         ],
-        "fallbackTag": "🐢main4_split",
+        "fallbackTag": "🐢proxy1",
         "strategy": {
           "type": "leastPing"
         }
@@ -65,8 +65,8 @@
   },
   "Observatory": {
     "subjectSelector": [
-      "🐢main4_split",
-      "🐢main5_split"
+      "🐢proxy1",
+      "🐢proxy2"
     ],
     "probeUrl": "https://www.google.com/generate_204",
     "probeInterval": "10m",
@@ -74,8 +74,8 @@
   },
   "BurstObservatory": {
     "subjectSelector": [
-      "🐢main4_split",
-      "🐢main5_split"
+      "🐢proxy1",
+      "🐢proxy2"
     ],
     "pingConfig": {
       "destination": "https://connectivitycheck.gstatic.com/generate_204",
