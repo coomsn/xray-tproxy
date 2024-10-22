@@ -1,0 +1,36 @@
+{
+  "dns": {
+    "hosts": {
+      "domain:googleapis.cn": "googleapis.com",
+      "domain:google.cn": "google.com"
+    },
+    "servers": [
+      {
+        "address": "https+local://223.5.5.5/dns-query",
+        "domains": [
+          "domain:chinaums.com",
+          "domain:banjixiaoguanjia.com",
+          "geosite:googlefcm",
+          "regexp:.*mtalk\\.google\\.com$",
+          "geosite:cn",
+          "geosite:geolocation-cn"
+        ],
+        "skipFallback": true
+      },
+      {
+        "address": "https+local://[2606:4700:4700::64]/dns-query",
+        "domains": [
+          "geosite:geolocation-!cn",
+          "domain:googleapis.cn",
+          "domain:gstatic.com",
+          "geosite:openai",
+          "geosite:google",
+          "geosite:google@cn"
+        ],
+        "skipFallback": true
+      },
+      "https+local://[2001:4860:4860::64]/dns-query"
+    ],
+    "queryStrategy": "UseIP"
+  }
+}
