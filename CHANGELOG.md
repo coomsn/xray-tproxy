@@ -4,9 +4,9 @@
 
 ### 内核升级脚本
 
-### iptables启用多线程启动
-
 路径：`/xray_lite/scripts/update_xray`
+
+### iptables启用多线程启动
 
 本模块自带一个永久节点，协议为 **WireGuard**。
 
