@@ -8,7 +8,5 @@
 
 ### iptables启用多线程启动
 
-本模块自带一个永久节点，协议为 **WireGuard**。
-
 ### 自动备份/xray_lite/，自动还原/xray_lite/confs/、/xray_lite/scripts/settings.ini
 
