@@ -1,5 +1,4 @@
-name: v1.0
-
+name: v2.0
 on:
   workflow_dispatch:
   push:
