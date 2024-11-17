@@ -27,5 +27,4 @@ start_xray_lite.inotify() {
 
 # Create inotifyd.
 start_xray_lite.inotify
-
 # version2.0
