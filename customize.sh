@@ -1,7 +1,7 @@
 #!/system/bin/sh
-#####################
-# xray_lite Customization
-#####################
+##########################
+# xray_lite Customization#
+##########################
 SKIPUNZIP=1
 ASH_STANDALONE=1
 unzip_path="/data/adb"
