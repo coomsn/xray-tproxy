@@ -1,7 +1,7 @@
 #!/system/bin/sh
-##########################
+############################
 # xray_tproxy Customization#
-##########################
+############################
 SKIPUNZIP=1
 ASH_STANDALONE=1
 unzip_path="/data/adb"
