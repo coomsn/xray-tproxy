@@ -2,11 +2,11 @@
 scripts=$(realpath $0)
 scripts_dir=$(dirname ${scripts})
 parent_dir=$(dirname ${scripts_dir})
-module_dir="/data/adb/modules/xray_lite-module"
+module_dir="/data/adb/modules/xray_tproxy-module"
 
 clear
 echo "Upgrade xray files."
-source ${scripts_dir}/xray_lite.service
+source ${scripts_dir}/xray_tproxy.service
 
 # Get the latest version tag name，Not ignor Pre-release
 latest_version=$(curl -s https://api.github.com/repos/XTLS/Xray-core/releases | grep -m 1 -oE '"tag_name": *"v[0-9]+\.[0-9]+\.[0-9]+"' | awk -F '"' '{print $4}')
