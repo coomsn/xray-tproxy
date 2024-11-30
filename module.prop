@@ -1,7 +1,7 @@
-id=xray_tproxy-module
-name=xray_tproxy4magisk
-version=v2.0
-versionCode=20241127
+id=xray-tproxy
+name=Xray Tproxy
+version=v2.1
+versionCode=20241130
 author=Tony
-description=Created on 11 27, 2024.
-updateJson=https://github.com/coomsn/xray_tproxy4magisk_public/raw/main/update.json
+description=Created on 11 30, 2024.
+updateJson=https://github.com/coomsn/xray-tproxy/raw/main/update.json

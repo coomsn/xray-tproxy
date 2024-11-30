@@ -1,4 +1,4 @@
-name: xray_tproxy4magisk_v2.0
+name: xray-tproxy-v2.1
 on:
   workflow_dispatch:
   push:
@@ -25,8 +25,8 @@ jobs:
           echo '{
             "version": "'"${version}"'",
             "versionCode": "'"${versionCode}"'",
-            "zipUrl": "https://github.com/coomsn/xray_tproxy4magisk_public/releases/download/'"${version}"'/xray_tproxy_'${version}'.zip",
-            "changelog": "https://github.com/coomsn/xray_tproxy4magisk_public/raw/main/CHANGELOG.md"
+            "zipUrl": "https://github.com/coomsn/xray-tproxy/releases/download/'"${version}"'/xray-tproxy-'${version}'.zip",
+            "changelog": "https://github.com/coomsn/xray-tproxy/raw/main/CHANGELOG.md"
           }' > update.json
 
       - name: Commit and push update.json
@@ -44,8 +44,8 @@ jobs:
         id: extract_version
         run: |
           # Find the ZIP file and extract the version number from its name
-          zip_file=$(ls xray_tproxy_v*.zip)
-          version=$(echo "$zip_file" | sed -E 's/xray_tproxy_v(.*).zip/v\1/')
+          zip_file=$(ls xray-tproxy-v*.zip)
+          version=$(echo "$zip_file" | sed -E 's/xray-tproxy-v(.*).zip/v\1/')
           echo "VERSION=${version}" >> $GITHUB_ENV
 
       - name: Read release notes from CHANGELOG.md
@@ -61,7 +61,7 @@ jobs:
         if: ${{ success() }}
         with:
           tag_name: ${{ env.VERSION }}
-          files: xray_tproxy_v*.zip
+          files: xray-tproxy-v*.zip
           body: ${{ env.RELEASE_NOTES }}
           prerelease: false
           generate_release_notes: false
