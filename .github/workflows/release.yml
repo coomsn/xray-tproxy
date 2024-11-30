@@ -35,6 +35,7 @@ jobs:
           git config --local user.email "acstudycn@gmail.com"
           git add update.json
           git commit -m "Update update.json for version $(grep -oP 'version=\K[^ ]+' module.prop)"
+          git remote set-url origin https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}
           git push -f origin main
 
       - name: Run build.sh
