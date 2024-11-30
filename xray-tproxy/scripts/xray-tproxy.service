@@ -70,6 +70,7 @@ if [ -f "${Bin}" ]; then
   description "✔" "is running."
 else
   log Error "Binary ${Bin} not found"
+  am start -a android.intent.action.VIEW -n com.jozein.xedgepro/.ui.ActivityPerformAction --ei __0 111 --es __1 "${Bin##*/} not found" >/dev/null 2>&1
   exit 1
 fi
 echo "${Bin##*/}:$(pidof ${Bin})" > ${scripts_dir}/pid.txt
