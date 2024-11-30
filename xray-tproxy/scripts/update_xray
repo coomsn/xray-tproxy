@@ -2,11 +2,11 @@
 scripts=$(realpath $0)
 scripts_dir=$(dirname ${scripts})
 parent_dir=$(dirname ${scripts_dir})
-module_dir="/data/adb/modules/xray_tproxy-module"
+module_dir="/data/adb/modules/xray-tproxy"
 
 clear
 echo "Upgrade xray files."
-source ${scripts_dir}/xray_tproxy.service
+source ${scripts_dir}/xray-tproxy.service
 
 # Get the latest version tag name，Not ignor Pre-release
 latest_version=$(curl -s https://api.github.com/repos/XTLS/Xray-core/releases | grep -m 1 -oE '"tag_name": *"v[0-9]+\.[0-9]+\.[0-9]+"' | awk -F '"' '{print $4}')
@@ -58,4 +58,4 @@ else
   echo "File download failed."
   exit 1  # Exit the script with a non-zero status code to indicate failure
 fi
-# 2024 1116
+# {version2.1}
