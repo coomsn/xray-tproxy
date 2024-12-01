@@ -1,0 +1,83 @@
+name: xray-tproxy-v2.1
+on:
+  workflow_dispatch:
+  push:
+    paths-ignore:
+      - ".github"
+      - "README.md"
+    tags-ignore:
+      - "v*"
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Update update.json
+        run: |
+          # 提取 module.prop 文件中的 version 和 versionCode
+          version=$(grep -oP 'version=\K[^ ]+' module.prop)
+          versionCode=$(grep -oP 'versionCode=\K[^ ]+' module.prop)
+
+          # 生成 update.json 文件
+          echo '{
+            "version": "'"${version}"'",
+            "versionCode": "'"${versionCode}"'",
+            "zipUrl": "https://github.com/coomsn/xray-tproxy/releases/download/'"${version}"'/xray-tproxy-'${version}'.zip",
+            "changelog": "https://github.com/coomsn/xray-tproxy/raw/main/CHANGELOG.md"
+          }' > update.json
+
+      - name: Commit and push update.json
+        run: |
+          git config --local user.name "coomsn"
+          git config --local user.email "acstudycn@gmail.com"
+          git add update.json
+          git commit --allow-empty -m "Update update.json for version $(grep -oP 'version=\K[^ ]+' module.prop)"
+          git remote set-url origin https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}
+          git push -f origin main
+
+      - name: Run build.sh
+        run: sh build.sh
+
+      - name: Extract version from filename
+        id: extract_version
+        run: |
+          # Find the ZIP file and extract the version number from its name
+          zip_file=$(ls xray-tproxy-v*.zip)
+          version=$(echo "$zip_file" | sed -E 's/xray-tproxy-v(.*).zip/v\1/')
+          echo "VERSION=${version}" >> $GITHUB_ENV
+
+      - name: Delete existing release
+        run: |
+          release_id=$(gh api -H "Accept: application/vnd.github+json" \
+            /repos/${{ github.repository }}/releases \
+            | jq '.[] | select(.tag_name == env.VERSION) | .id')
+          if [ -n "$release_id" ]; then
+            gh api -X DELETE /repos/${{ github.repository }}/releases/$release_id
+            echo "Deleted existing release with ID: $release_id"
+          fi
+          # Delete the tag if it exists
+          if git ls-remote --tags origin | grep -q "refs/tags/${{ env.VERSION }}$"; then
+            git push origin :refs/tags/${{ env.VERSION }}
+            echo "Deleted existing tag: ${{ env.VERSION }}"
+          fi
+
+      - name: Read release notes from CHANGELOG.md
+        id: get_release_notes
+        run: |
+          RELEASE_NOTES=$(cat CHANGELOG.md)
+          echo "RELEASE_NOTES<<EOF" >> $GITHUB_ENV
+          echo "$RELEASE_NOTES" >> $GITHUB_ENV
+          echo "EOF" >> $GITHUB_ENV
+
+      - name: Upload release
+        uses: softprops/action-gh-release@v1
+        if: ${{ success() }}
+        with:
+          tag_name: ${{ env.VERSION }}
+          files: xray-tproxy-v*.zip
+          body: ${{ env.RELEASE_NOTES }}
+          prerelease: false
+          generate_release_notes: false
