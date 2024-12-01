@@ -63,9 +63,7 @@ if [ -f "${Bin}" ]; then
   run_disable_quic
   ulimit -SHn 1000000
   wait
-  export XRAY_LOCATION_ASSET="${parent_dir}/binary"
-  export XRAY_LOCATION_CONFDIR="${parent_dir}/confs"
-  nohup busybox setuidgid ${xray_user}:${xray_group} ${Bin} > /dev/null 2>&1 &
+  nohup busybox setuidgid ${xray_user}:${xray_group} ${Bin} run -confdir ${config_dir} > /dev/null 2>&1 &
   am start -a android.intent.action.VIEW -n com.jozein.xedgepro/.ui.ActivityPerformAction --ei __0 111 --es __1 "代理已开启" >/dev/null 2>&1
   description "✔" "is running."
 else
@@ -270,3 +268,12 @@ current_time=$(date "+[%m.%d %H:%M]")
 sed -i "/description/c\description=${current_time} ${symbol} ${core_name} ${version} ${network_mode} ${event}" "${prop_file}"
 }
 # {version2.1}
+
+case "$1" in
+    enable)
+        start_tproxy
+        ;;
+    disable)
+        stop_tproxy
+        ;;
+esac
